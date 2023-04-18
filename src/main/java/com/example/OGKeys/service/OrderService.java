@@ -60,5 +60,7 @@ public class OrderService {
         return orderProductRepository.findAll();
     }
 
-
+    public List<OrderProduct> getByUserName(String userName) {
+        return orderProductRepository.getByUserName(userName);
+    }
 }

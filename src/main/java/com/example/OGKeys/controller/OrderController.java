@@ -3,6 +3,7 @@ package com.example.OGKeys.controller;
 import com.example.OGKeys.model.AuthUser;
 import com.example.OGKeys.model.OrderDto;
 import com.example.OGKeys.model.OrderProduct;
+import com.example.OGKeys.model.OrderUser;
 import com.example.OGKeys.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<?> create(@RequestBody OrderDto orderDto) {
         if (orderService.create(orderDto)){
-            return ResponseEntity.ok().body(Collections.singleton("Order Has been placed"));
+            return ResponseEntity.ok().body(Collections.singleton("Your order Has been placed"));
         }
         return ResponseEntity.badRequest().body(Collections.singleton("Order Failed Try Again"));
     }
@@ -39,6 +40,12 @@ public class OrderController {
 
     @GetMapping("/getAll")
     public ResponseEntity<?> getAllOrders() {
+        System.out.println("1");
         return ResponseEntity.ok().body(orderService.getAllOrders());
+    }
+
+    @PostMapping("/getByUserName")
+    public ResponseEntity<?> getByUserName(@RequestBody OrderUser userName) {
+        return ResponseEntity.ok().body(orderService.getByUserName(userName.getUserName()));
     }
 }

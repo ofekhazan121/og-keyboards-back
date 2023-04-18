@@ -41,4 +41,9 @@ public class ProductController {
         return ResponseEntity.ok().body(service.getByFilters(product));
     }
 
+    @GetMapping("/getAll")
+    public List<Product> getAll() {
+        return service.getAll();
+    }
+
 }

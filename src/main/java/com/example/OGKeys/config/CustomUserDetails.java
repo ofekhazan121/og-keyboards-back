@@ -2,6 +2,8 @@ package com.example.OGKeys.config;
 
 
 import com.example.OGKeys.model.AuthUser;
+import com.example.OGKeys.model.Role;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 
+@ToString
 public class CustomUserDetails implements UserDetails {
 
     private AuthUser user;
@@ -60,5 +63,9 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Role getRole() {
+        return user.getRole();
     }
 }

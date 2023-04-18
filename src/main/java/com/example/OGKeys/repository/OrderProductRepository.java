@@ -15,4 +15,5 @@ public interface OrderProductRepository extends JpaRepository<OrderProduct, Inte
     public List<OrderProduct> getByOrderNumber (long number);
 
 
+    public List<OrderProduct> getByUserName (String userName);
 }

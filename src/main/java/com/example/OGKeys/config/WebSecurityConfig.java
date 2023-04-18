@@ -1,6 +1,7 @@
 package com.example.OGKeys.config;
 
 import com.example.OGKeys.component.JwtRequestFilter;
+import com.example.OGKeys.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -31,7 +32,7 @@ public class WebSecurityConfig {
     private JwtRequestFilter jwtRequestFilter;
 
     @Bean
-    AuthenticationProvider authenticationProvider () {
+    public AuthenticationProvider authenticationProvider () {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(new BCryptPasswordEncoder());
@@ -41,16 +42,19 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception{
         return http.csrf().disable().authorizeHttpRequests()
+                .requestMatchers("/product/addproduct").hasAuthority("ADMIN")
+                .requestMatchers("/users/hello").hasAnyAuthority("ADMIN","WORKER")
+                .requestMatchers("/order/getAll").hasRole(Role.ADMIN.name())
+                .requestMatchers("/order/getByUserName").authenticated()
+                .requestMatchers("/users/checkJWT").authenticated()
                 .requestMatchers("/product/filter").permitAll()
                 .requestMatchers("/product/getProduct").permitAll()
                 .requestMatchers("/product/getByName").permitAll()
-                .requestMatchers("/product/addproduct").permitAll()
+                .requestMatchers("/product/getAll").permitAll()
                 .requestMatchers("/users/signup").permitAll()
                 .requestMatchers("/users/login").permitAll()
-                .requestMatchers("/users/hello").hasAnyAuthority("ADMIN","WORKER")
                 .requestMatchers("/order").permitAll()
                 .requestMatchers("/order/get").permitAll()
-                .requestMatchers("/order/getAll").permitAll()
                 .and().sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)

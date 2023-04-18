@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -54,13 +55,13 @@ public class UserController {
 
         return ResponseEntity.ok().body(
                 new AuthenticationResponse(
-                        jwt,userDetails.getFirstName(),userDetails.getLastName(),userDetails.getUsername())
+                        jwt,userDetails.getFirstName(),userDetails.getLastName(),userDetails.getUsername(), userDetails.getRole())
         );
     }
 
-
-    @GetMapping("/hello")
-    public String hello(){
-        return "hello";
+    @PostMapping("/checkJWT")
+    public ResponseEntity<?> checkJWT(){
+        return ResponseEntity.status(200).body("JWT is Valid");
     }
+
 }

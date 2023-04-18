@@ -34,6 +34,10 @@ public class ProductService {
         return repository.getByName(product.getName());
     }
 
+    public List<Product> getAll () {
+        return repository.findAll();
+    }
+
     public List<Product> getByFilters (Product product) {
 
         if (product.getType() !=null && product.getBrand() != null && product.getSubType() != null) {
