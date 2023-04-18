@@ -1,7 +1,9 @@
 package com.example.OGKeys.config;
 
+
+
 import com.example.OGKeys.component.JwtRequestFilter;
-import com.example.OGKeys.model.Role;
+import com.example.OGKeys.config.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +27,7 @@ import org.springframework.web.filter.CorsFilter;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
+
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
@@ -32,19 +35,19 @@ public class WebSecurityConfig {
     private JwtRequestFilter jwtRequestFilter;
 
     @Bean
-    public AuthenticationProvider authenticationProvider () {
+    public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(new BCryptPasswordEncoder());
+        provider.setUserDetailsService(userDetailsService);
         return provider;
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http.csrf().disable().authorizeHttpRequests()
                 .requestMatchers("/product/addproduct").hasAuthority("ADMIN")
                 .requestMatchers("/users/hello").hasAnyAuthority("ADMIN","WORKER")
-                .requestMatchers("/order/getAll").hasRole(Role.ADMIN.name())
+                .requestMatchers("/order/getAll").hasAnyAuthority("ADMIN", "WORKER")
                 .requestMatchers("/order/getByUserName").authenticated()
                 .requestMatchers("/users/checkJWT").authenticated()
                 .requestMatchers("/product/filter").permitAll()
@@ -59,6 +62,12 @@ public class WebSecurityConfig {
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .httpBasic(Customizer.withDefaults()).build();
+    }
+
+    @Autowired
+    @Bean
+    public AuthenticationManager authenticationManagerBean(HttpSecurity http) throws Exception{
+        return http.getSharedObject(AuthenticationManagerBuilder.class).build();
     }
 
     @Bean
@@ -82,10 +91,5 @@ public class WebSecurityConfig {
         return bean;
     }
 
-    @Autowired
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity httpSecurity) throws Exception{
-        return httpSecurity.getSharedObject(AuthenticationManagerBuilder.class).build();
-    }
 
 }

@@ -1,11 +1,13 @@
 package com.example.OGKeys.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collections;
 
 @Data
+@AllArgsConstructor
 public class AuthenticationResponse {
 
     public final String jwt;

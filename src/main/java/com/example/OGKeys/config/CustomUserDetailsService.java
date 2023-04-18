@@ -11,19 +11,17 @@ import java.util.Optional;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-
     @Autowired
-    private UserRepository repository;
+    private UserRepository authUserRepository;
+
 
 
     @Override
     public CustomUserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<AuthUser> user = repository.findByUserName(username);
-
-        System.out.println(user);
-        if (user.isEmpty()) {
-            throw new UsernameNotFoundException("User not Found");
+        Optional<AuthUser> authUser = authUserRepository.findByUserName(username);
+        if (authUser.isPresent()){
+            return new CustomUserDetails(authUser.get());
         }
-        return new CustomUserDetails(user.get());
+        throw new UsernameNotFoundException("User Not Found");
     }
 }
