@@ -3,46 +3,40 @@ package com.example.OGKeys.config;
 
 import com.example.OGKeys.model.AuthUser;
 import com.example.OGKeys.model.Role;
-import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Collection;
 import java.util.Collections;
 
-@ToString
+
 public class CustomUserDetails implements UserDetails {
 
-    private AuthUser user;
+    private AuthUser authUser;
 
-    public CustomUserDetails(AuthUser user){
+    public CustomUserDetails(AuthUser authUser){
         super();
-        this.user = user;
+        this.authUser = authUser;
     }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority(user.getRole().name()));
+        return Collections.singleton(new SimpleGrantedAuthority(authUser.getRole().name()));
     }
 
-
-    public String getFirstName() {
-        return user.getFirstName();
-    }
-
-    public String getLastName() {
-        return user.getLastName();
+    public Role getRole(){
+        return authUser.getRole();
     }
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return authUser.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return user.getUserName();
+        return authUser.getUserName();
     }
 
     @Override
@@ -65,7 +59,11 @@ public class CustomUserDetails implements UserDetails {
         return true;
     }
 
-    public Role getRole() {
-        return user.getRole();
+    public String getFirstName() {
+        return authUser.getFirstName();
+    }
+
+    public String getLastName() {
+        return authUser.getLastName();
     }
 }
