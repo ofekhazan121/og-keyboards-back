@@ -1,9 +1,6 @@
 package com.example.OGKeys.controller;
 
-import com.example.OGKeys.model.AuthUser;
-import com.example.OGKeys.model.OrderDto;
-import com.example.OGKeys.model.OrderProduct;
-import com.example.OGKeys.model.OrderUser;
+import com.example.OGKeys.model.*;
 import com.example.OGKeys.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,12 +37,25 @@ public class OrderController {
 
     @GetMapping("/getAll")
     public ResponseEntity<?> getAllOrders() {
-        System.out.println("1");
         return ResponseEntity.ok().body(orderService.getAllOrders());
     }
 
     @PostMapping("/getByUserName")
     public ResponseEntity<?> getByUserName(@RequestBody OrderUser userName) {
         return ResponseEntity.ok().body(orderService.getByUserName(userName.getUserName()));
+    }
+
+    @PutMapping("/updateStatus")
+    public ResponseEntity<?> updateStatus(@RequestBody StatusUpdate statusUpdate) {
+
+        if (orderService.updateStatus(statusUpdate)) {
+            return ResponseEntity.ok().body("Order Updated Successfully");
+        }
+        return ResponseEntity.badRequest().body("Something Went Wrong. Try again!");
+    }
+
+    @GetMapping("/getOrderNumbers")
+    public ResponseEntity<?> getOrderNumbers() {
+        return ResponseEntity.ok().body(orderService.workerOrder());
     }
 }

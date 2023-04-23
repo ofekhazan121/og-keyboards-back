@@ -19,7 +19,7 @@ public class OrderDto {
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dateCreated;
 
-    private String status;
+    private Status status;
     private String userName;
     private List<OrderProduct> productList;
 

@@ -66,4 +66,8 @@ public class CustomUserDetails implements UserDetails {
     public String getLastName() {
         return authUser.getLastName();
     }
+
+    public String getId() {
+        return authUser.getId();
+    }
 }

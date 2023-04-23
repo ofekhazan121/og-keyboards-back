@@ -7,9 +7,11 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class OrderResponse {
+public class WorkerOrderResponse {
 
     public long orderNumber;
     public Status status;
-    public List<List<OrderProduct>> orderProducts;
+    public String workerName;
+    public List<OrderProduct> orderProducts;
+
 }

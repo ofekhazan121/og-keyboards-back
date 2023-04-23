@@ -31,7 +31,7 @@ public class OrderService {
         if (userService.userExist(orderDto.getUserName())){
             try {
                 orderDto.setDateCreated(LocalDate.now());
-                orderDto.setStatus("received");
+                orderDto.setStatus(Status.RECEIVED);
                 orderDto.setId(System.currentTimeMillis());
                 orderDto.getProductList().forEach(orderProduct -> {
                     orderProduct.setProductName(productRepository.findById(orderProduct.getProductId()).get().getName());
@@ -62,5 +62,50 @@ public class OrderService {
 
     public List<OrderProduct> getByUserName(String userName) {
         return orderProductRepository.getByUserName(userName);
+    }
+
+    public boolean updateStatus (StatusUpdate statusUpdate) {
+
+        try {
+            List<OrderProduct> order = orderProductRepository.getByOrderNumber(statusUpdate.getOrderNumber());
+            order.stream().forEach(orderProduct -> {
+                orderProduct.setStatus(statusUpdate.getStatus());
+                orderProduct.setWorkerId(statusUpdate.getWorkerId());
+            });
+            orderProductRepository.saveAll(order);
+            return true;
+        }catch (Exception e) {
+            return false;
+        }
+    }
+
+    public List<List<OrderProduct>> getOrderNumbers() {
+        List<Long> orderNumbers = orderProductRepository.getOrderNumbers();
+        List<List<OrderProduct>> orders = new ArrayList<>();
+        orderNumbers.stream().forEach(number -> {
+            orders.add(orderProductRepository.getByOrderNumber(number));
+        });
+        return orders;
+    }
+
+    public List<WorkerOrderResponse> workerOrder () {
+        List<List<OrderProduct>> orders = getOrderNumbers();
+        List<WorkerOrderResponse> workerOrderResponses = new ArrayList<>();
+
+        orders.forEach(orderProducts -> {
+            workerOrderResponses.add(new WorkerOrderResponse(orderProducts.get(0).getOrderNumber(),
+                    orderProducts.get(0).getStatus(),
+                    getWorkerName(orderProducts.get(0).getWorkerId()),
+                    orderProducts));
+        });
+        return workerOrderResponses;
+    }
+
+    public String getWorkerName (String id) {
+        if (id != null) {
+            return userRepository.findById(id).get().getFirstName();
+        }else {
+            return null;
+        }
     }
 }

@@ -24,16 +24,14 @@ public class OrderProduct {
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dateCreated;
-
     private long orderNumber;
-
-    @NonNull
     private String userName;
     private long productId;
     public String productName;
     public float price;
     private Integer quantity;
-    private String status;
+    private Status status;
+    private String workerId;
 
     public OrderProduct(long productId, Integer quantity) {
         this.productId = productId;

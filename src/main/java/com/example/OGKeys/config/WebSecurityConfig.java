@@ -48,6 +48,8 @@ public class WebSecurityConfig {
                 .requestMatchers("/product/addproduct").hasAuthority("ADMIN")
                 .requestMatchers("/users/hello").hasAnyAuthority("ADMIN","WORKER")
                 .requestMatchers("/order/getAll").hasAnyAuthority("ADMIN", "WORKER")
+                .requestMatchers("/order/updateStatus").hasAnyAuthority("ADMIN","WORKER")
+                .requestMatchers("/order/getOrderNumbers").hasAnyAuthority("ADMIN","WORKER")
                 .requestMatchers("/order/getByUserName").authenticated()
                 .requestMatchers("/users/checkJWT").authenticated()
                 .requestMatchers("/product/filter").permitAll()
@@ -58,6 +60,10 @@ public class WebSecurityConfig {
                 .requestMatchers("/users/login").permitAll()
                 .requestMatchers("/order").permitAll()
                 .requestMatchers("/order/get").permitAll()
+                .requestMatchers("/product/updateProduct").permitAll()
+                .requestMatchers("/product/deleteProduct").permitAll()
+
+
                 .and().sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)

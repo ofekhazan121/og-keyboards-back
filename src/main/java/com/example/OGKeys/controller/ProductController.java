@@ -46,4 +46,19 @@ public class ProductController {
         return service.getAll();
     }
 
+    @PostMapping("/updateProduct")
+    public ResponseEntity<?> updateProduct(@RequestBody ProductResponse productResponse) {
+        if (service.updateProduct(productResponse.getProduct(), productResponse.getSpec())) {
+            return ResponseEntity.ok().body("Product Updated Successfully");
+        }
+        return ResponseEntity.badRequest().body("Product Update Failed!");
+    }
+
+    @PostMapping("/deleteProduct")
+    public ResponseEntity<?> deleteProduct(@RequestBody long id) {
+        if (service.deleteProduct(id)) {
+            return ResponseEntity.ok().body("Product Deleted");
+        }
+        return ResponseEntity.badRequest().body("Product Deletion Failed!");
+    }
 }

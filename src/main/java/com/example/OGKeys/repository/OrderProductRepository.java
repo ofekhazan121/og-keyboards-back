@@ -1,7 +1,6 @@
 package com.example.OGKeys.repository;
 
 import com.example.OGKeys.model.OrderProduct;
-import com.example.OGKeys.model.OrderResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -14,6 +13,8 @@ public interface OrderProductRepository extends JpaRepository<OrderProduct, Inte
 
     public List<OrderProduct> getByOrderNumber (long number);
 
-
     public List<OrderProduct> getByUserName (String userName);
+
+    @Query(value = "SELECT distinct order_number from order_product", nativeQuery = true)
+    public List<Long> getOrderNumbers ();
 }

@@ -8,6 +8,7 @@ import com.example.OGKeys.repository.SpecRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -27,7 +28,34 @@ public class ProductService {
     }
 
     public ProductResponse getById (long id) {
-        return new ProductResponse(repository.findById(id).get(),specRepository.findById(id).get());
+        Optional<Product> product = repository.findById(id);
+        if (product.isPresent()) {
+            return new ProductResponse(repository.findById(id).get(),specRepository.findById(id).get());
+        }
+        else {
+            return new ProductResponse(null, null);
+        }
+    }
+
+    public boolean deleteProduct (long id) {
+        try {
+            repository.deleteById(id);
+            specRepository.deleteById(id);
+            return true;
+        }catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean updateProduct(Product product, Spec spec) {
+        ProductResponse productResponse = getById(product.getId());
+
+        if (productResponse.getProduct() != null){
+            repository.save(product);
+            specRepository.save(spec);
+            return true;
+        }
+        return false;
     }
 
     public List<Product> getByName (Product product) {
