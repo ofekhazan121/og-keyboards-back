@@ -50,7 +50,7 @@ public class UserController {
         if (service.addUser(user)){
             return ResponseEntity.ok().body("User Signed Up Successfully");
         }
-        return ResponseEntity.badRequest().body("Something Went Wrong");
+        return ResponseEntity.badRequest().body("Username Or Email already in use");
     }
 
     @PostMapping("/login")

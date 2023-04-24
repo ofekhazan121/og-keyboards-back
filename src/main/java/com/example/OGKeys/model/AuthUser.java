@@ -31,7 +31,6 @@ public class AuthUser {
     String email;
 
     @NotNull(message = "Password must be filled")
-    @Pattern(regexp = "^.{8,20}$", message = "Password Must be At Least 8 Characters")
     String password;
 
     Role role;
@@ -45,7 +44,6 @@ public class AuthUser {
     String lastName;
 
     @Pattern(regexp = "^[0-9]{10}$",message = "Phone Must Be 10 digits")
-    @Nullable
     String phoneNumber;
 
     public AuthUser(String username,String password){

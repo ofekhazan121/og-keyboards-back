@@ -20,10 +20,14 @@ public class UserService {
     }
 
     public boolean addUser (AuthUser user) {
+        System.out.println(user);
         try {
             Optional<AuthUser> checkUserName = repository.findByUserName(user.getUserName());
             Optional<AuthUser> checkEmail = repository.findByEmail(user.getEmail());
 
+            if (checkUserName.isPresent() || checkEmail.isPresent()) {
+                System.out.println(true);
+            }
             if (checkUserName.isEmpty() && checkEmail.isEmpty()){
                 user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
                 user.setRole(Role.CLIENT);
@@ -32,6 +36,7 @@ public class UserService {
             }
             return false;
         }catch (Exception e){
+            System.out.println(e);
             return false;
         }
     }
