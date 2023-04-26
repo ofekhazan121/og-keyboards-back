@@ -30,7 +30,9 @@ public class UserService {
             }
             if (checkUserName.isEmpty() && checkEmail.isEmpty()){
                 user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-                user.setRole(Role.CLIENT);
+                if (user.getRole() == null) {
+                    user.setRole(Role.CLIENT);
+                }
                 repository.save(user);
                 return true;
             }

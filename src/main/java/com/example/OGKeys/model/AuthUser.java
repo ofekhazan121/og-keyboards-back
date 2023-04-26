@@ -56,5 +56,15 @@ public class AuthUser {
         this.password = password;
         this.role = role;
     }
+
+    public AuthUser(String userName, String email, String password, Role role, String firstName, String lastName) {
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
 }
 
