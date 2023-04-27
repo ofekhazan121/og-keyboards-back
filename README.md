@@ -11,8 +11,6 @@
 To use this project fully, you'll need to use my React Frontend project with it. You can find it [here](https://github.com/ofekhazan121/og-keyboards-front).
 
 
-To clone and run this application, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/) (which comes with [npm](http://npmjs.com)) installed on your computer. From your command line:
-
 ```bash
 # Clone this repository
 $ git clone https://github.com/ofekhazan121/og-keyboards-back
